@@ -332,6 +332,17 @@ app.delete('/api/snippets/:id', async (req, res) => {
   }
 });
 
+// Serve React static build files in production
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.join(__dirname, '../client/dist');
+  app.use(express.static(distPath));
+  
+  // All other GET requests route to React's index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
+
 // Start listening
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);

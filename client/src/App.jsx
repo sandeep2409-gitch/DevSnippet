@@ -6,6 +6,7 @@ import Stats from './components/Stats';
 import { Search, Sparkles, FolderHeart, Terminal, X, Code2 } from 'lucide-react';
 
 export default function App() {
+  const API_BASE = import.meta.env.VITE_API_URL || '';
   const [snippets, setSnippets] = useState([]);
   const [stats, setStats] = useState({
     totalCount: 0,
@@ -27,7 +28,7 @@ export default function App() {
     setError(null);
     try {
       // Build API query URL based on active filters and search queries
-      let url = '/api/snippets';
+      let url = `${API_BASE}/api/snippets`;
       const params = new URLSearchParams();
 
       if (query) {
@@ -53,7 +54,7 @@ export default function App() {
       setSnippets(dataSnippets);
 
       // Fetch stats summary
-      const resStats = await fetch('/api/snippets/stats');
+      const resStats = await fetch(`${API_BASE}/api/snippets/stats`);
       if (resStats.ok) {
         const dataStats = await resStats.json();
         setStats(dataStats);
@@ -74,7 +75,7 @@ export default function App() {
   // Handle Save (Create or Edit)
   const handleSaveSnippet = async (snippetData) => {
     try {
-      let url = '/api/snippets';
+      let url = `${API_BASE}/api/snippets`;
       let method = 'POST';
 
       if (editingSnippet) {
@@ -108,7 +109,7 @@ export default function App() {
     if (!window.confirm('Are you sure you want to delete this snippet?')) return;
 
     try {
-      const res = await fetch(`/api/snippets/${id}`, {
+      const res = await fetch(`${API_BASE}/api/snippets/${id}`, {
         method: 'DELETE'
       });
 
@@ -124,7 +125,7 @@ export default function App() {
   const handleTogglePin = async (snippet) => {
     const id = snippet._id || snippet.id;
     try {
-      const res = await fetch(`/api/snippets/${id}`, {
+      const res = await fetch(`${API_BASE}/api/snippets/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pinned: !snippet.pinned })
