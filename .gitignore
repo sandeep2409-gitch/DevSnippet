@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+
+# Environment Variables (Keep credentials secure!)
+.env
+.env.local
+server/.env
+
+# Local Database Fallbacks
+server/db.json
+
+# Builds & Outputs
+dist/
+client/dist/
+
+# System Files
+.DS_Store
+Thumbs.db
